@@ -9,7 +9,7 @@ import React, {
 } from 'react-native';
 import SearchComponent from '../../components/SearchComponent';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchListOfUsersAsync} from '../../redux/UserActions';
+import {fetchListOfUsersAsync, searchUserAsync} from '../../redux/UserActions';
 import LoaderComponent from '../../components/LoaderComponent';
 import {AppString} from '../../constants/AppStrings';
 import UserModalComponent from './components/UserModalComponent';
@@ -19,10 +19,15 @@ const UserListScreen = () => {
   const dispatch = useDispatch();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [username, setUsername] = useState();
+  const [searchText, setSearchText] = useState('');
   var timeoutId;
-  const {listOfUsers, listOfUsersLoading, listOfUsersError} = useSelector(
-    state => state.userReducer,
-  );
+  const {
+    listOfUsers,
+    listOfUsersLoading,
+    listOfUsersError,
+    searchedUser,
+    searchedUserLoading,
+  } = useSelector(state => state.userReducer);
 
   useEffect(() => {
     fetchListOfUsers();
@@ -82,27 +87,27 @@ const UserListScreen = () => {
     [isModalVisible],
   );
 
-  console.log('listOfUsersError: ', listOfUsersError);
   return (
     <View>
       <Text style={Styles.textStyle}>{AppString.userList}</Text>
       <SearchComponent
         onChangeText={val => {
           clearTimeout(timeoutId);
+          setSearchText(val);
           if (val) {
             timeoutId = setTimeout(() => {
-              handleItemTap(val);
+              dispatch(searchUserAsync(val));
             }, 1000);
           }
         }}
       />
       <FlatList
-        data={listOfUsers}
+        data={searchText === '' ? listOfUsers : searchedUser}
         renderItem={renderItem}
         contentContainerStyle={{
           paddingBottom: 56,
         }}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item?.id}
       />
       <UserModalComponent
         isVisible={isModalVisible}
@@ -111,7 +116,7 @@ const UserListScreen = () => {
       />
       {listOfUsersError && <Text>{listOfUsersError}</Text>}
       <LoaderComponent
-        isLoading={listOfUsersLoading}
+        isLoading={listOfUsersLoading || searchedUserLoading}
         color={AppColors.lightGray}
         size={45}
       />

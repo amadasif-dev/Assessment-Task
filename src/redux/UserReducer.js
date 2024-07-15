@@ -5,6 +5,9 @@ import {
   FETCH_USER_REQUEST,
   FETCH_USER_SUCCESS,
   FETCH_USER_FAILURE,
+  SEARCH_USER_REQUEST,
+  SEARCH_USER_SUCCESS,
+  SEARCH_USER_FAILURE,
 } from './UserActionTypes';
 
 const initialState = {
@@ -14,6 +17,9 @@ const initialState = {
   user: {},
   userLoading: false,
   userError: '',
+  searchedUser: [],
+  searchedUserLoading: false,
+  searchedUserError: '',
 };
 
 export default userReducer = (state = initialState, action) => {
@@ -64,6 +70,30 @@ export default userReducer = (state = initialState, action) => {
         user: {},
         userError: action.payload,
         userLoading: false,
+      };
+
+    case SEARCH_USER_REQUEST:
+      return {
+        ...state,
+        searchedUser: [],
+        searchedUserError: null,
+        searchedUserLoading: true,
+      };
+
+    case SEARCH_USER_SUCCESS:
+      return {
+        ...state,
+        searchedUser: [action.payload],
+        searchedUserError: null,
+        searchedUserLoading: false,
+      };
+
+    case SEARCH_USER_FAILURE:
+      return {
+        ...state,
+        searchedUser: [],
+        searchedUserError: action.payload,
+        searchedUserLoading: false,
       };
 
     default:
