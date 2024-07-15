@@ -22,6 +22,7 @@ const Styles = StyleSheet.create({
     backgroundColor: AppColor.lightGray,
     margin: 20,
     fontWeight: '700',
+    color:AppColor.black
   },
 });
 

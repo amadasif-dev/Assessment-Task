@@ -39,7 +39,6 @@ const UserModalComponent = ({isVisible, onClose, username}) => {
         <Image source={{uri: user?.avatar_url}} style={styles.imageStyle} />
         <View style={styles.textBody}>
           <Text style={[styles.txtStyle]}>
-            {' '}
             {AppString.Name} {user?.name}
           </Text>
           <Text style={styles.txtStyle}>
@@ -65,7 +64,7 @@ const UserModalComponent = ({isVisible, onClose, username}) => {
         <View style={{padding: 32}}>
           <LoaderComponent
             isLoading={userLoading}
-            color={AppColor.primary}
+            color={AppColor.lightDark}
             size={45}
           />
         </View>
@@ -101,7 +100,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(109, 110, 109, 0.4)',
   },
   modalContent: {
-    backgroundColor: AppColor.dark,
+    backgroundColor: AppColor.lightGray,
     padding: 20,
     borderRadius: 10,
     width: '80%',
@@ -112,7 +111,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   closeButtonText: {
-    color: AppColor.white,
+    color: AppColor.dark,
   },
   imageStyle: {
     height: 50,
@@ -126,6 +125,7 @@ const styles = StyleSheet.create({
   txtStyle: {
     fontSize: 15,
     marginTop: 5,
+    color:AppColor.dark
   },
 });
 
